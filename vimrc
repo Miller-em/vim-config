@@ -37,7 +37,7 @@ Plugin 'preservim/nerdtree'
 Plugin 'preservim/tagbar'
 
 " ctrlsf.vim 
-Plugin'dyng/ctrlsf.vim'
+Plugin 'dyng/ctrlsf.vim'
 
 " vim-fswitch
 Plugin 'derekwyatt/vim-fswitch'
@@ -107,6 +107,8 @@ let g:ctrlsf_default_root = 'cwd'   " projcet
 " ------------------------------------------------------------
 " fswitch configuration
 " ------------------------------------------------------------
+au! BufEnter *.cpp let b:fswitchdst = 'hpp,h'
+au! BufEnter *.h   let b:fswitchdst = 'cpp,c'
 
 " ------------------------------------------------------------
 " airline theme 
@@ -219,3 +221,43 @@ inoremap    <C-F>t    <Esc>:CtrlSFToggle<CR>
 " fswitch
 nmap        <C-Z>     :vsplit <bar> :wincmd l <bar> :FSRight<CR>
 
+" --------------------------------------------------------------------------------
+" BUILD SYSTEM
+" --------------------------------------------------------------------------------
+
+" Vim settings
+" --------------------------------------
+
+" Always render sign column so editor doesn't snap when there's a YCM error
+set signcolumn=yes
+
+" Mappings
+" --------------------------------------
+
+" Open vim-dispatch window and scroll to bottom
+nnoremap    <C-m>m    :Copen<CR> <bar> G
+
+" Build debug and release targets
+nnoremap    <C-m>bd   :Dispatch! make -C build/Debug<CR>
+nnoremap    <C-m>br   :Dispatch! make -C build/Release<CR>
+
+" Functions
+" ---------------------------------------
+
+" Map <F6> to the Debug executable with passed filename
+function SetBinaryDebug(filename)
+    let bpath = getcwd() . "/bin/Debug/" . a:filename
+    execute "nnoremap <F6> :Dispatch "
+            \ bpath
+            \ . " <CR> <bar> :Copen<CR>"
+    echo "<F6> will run: " . bpath
+endfunction
+
+" Map <F7> to the Release executable with passed filename
+function SetBinaryRelease(filename)
+    let bpath = getcwd() . "/bin/Release/" . a:filename 
+    execute "nnoremap <F7> :Dispatch "
+                \ bpath 
+                \ . "<CR> <bar> :Copen<CR>"
+    echo "<F7> will run: " . bpath
+endfunction
