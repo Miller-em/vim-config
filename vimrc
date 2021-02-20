@@ -28,7 +28,7 @@ Plugin 'danilo-augusto/vim-afterglow'
 Plugin 'sheerun/vim-polyglot'
 
 " Auto Pairs
-Plugin 'jiangmiao/auto-pairs'   " Auto Pairs
+Plugin 'jiangmiao/auto-pairs'   
 
 " NERDTree
 Plugin 'preservim/nerdtree'
@@ -55,6 +55,10 @@ Plugin 'ycm-core/YouCompleteMe'
 " vim-airline
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
+
+" nerdcommenter
+Plugin 'preservim/nerdcommenter'
+
 " List ends here. Plugins become visible to Vim after this call.
 call vundle#end()
 filetype plugin indent on
@@ -82,10 +86,6 @@ let NERDTreeWinSize = 31
 " ------------------------------------------------------------
 " tagbar configuration
 " ------------------------------------------------------------
-
-let g:tagbar_autofocus = 1
-let g:tagbar_autoshowtag = 1
-let g:tagbar_position = 'botright vertical'
 
 
 " ------------------------------------------------------------
@@ -141,7 +141,9 @@ let g:ycm_error_symbol = '>>'                    " The error symbol in Vim gutte
 let g:ycm_enable_diagnostic_signs = 1            " Display icons in Vim's gutter, error, warnings
 let g:ycm_enable_diagnostic_highlighting = 1     " Highlight regions of diagnostic text
 let g:ycm_echo_current_diagnostic = 1            " Echo line's diagnostic that cursor is on
-
+nnoremap jc :YcmCompleter GoToDeclaration<CR>
+" 只能是 #include 或已打开的文件
+nnoremap jd :YcmCompleter GoToDefinition<CR>
 
 " Set fswichdst and fswitchloc variables when BufEnter event takes place
 " on a file whose name matches {*.cpp}.
@@ -171,6 +173,7 @@ let g:disable_protodef_sorting = 1
 " Vim configuration
 " ------------------------------------------------------------
 
+filetype on             " Enable text type detection
 set nu                  " Enable line numbers
 syntax on               " Enable synax highlighting
 set incsearch           " Enable incremental search
@@ -193,11 +196,17 @@ set autoindent
 " ------------------------------------------------------------
 " Key mappings
 " ------------------------------------------------------------
+" 定义快捷键的前缀，即<Leader>
+let mapleader=";"
 
 " disabled the esc key
 inoremap    <esc>     <nop>  
 inoremap    jk        <esc>
 
+
+" quickly move to the start and end of line
+nmap        lb        ^
+nmap        le        $
 " General
 nmap        <C-B>     :buffers<CR>
 nmap        <C-J>     :term<CR>
